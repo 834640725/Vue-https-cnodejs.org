@@ -2,7 +2,7 @@
   <div id="app">
       <header class="header">
         <div class="header-content">
-          <img src="./assets/images/cnodejs_light.svg" alt="" class="header-logo">
+          <img src="./assets/images/cnodejs_light.svg" alt="" class="header-logo" @click="clickHander">
           <ul class="header-nav">
             <router-link tag="li"
                          v-for="item in navList"
@@ -37,6 +37,11 @@ export default {
   data(){
     return {
       navList:headerNavlist,
+    }
+  },
+  methods:{
+    clickHander(){
+      this.$router.push('index')
     }
   },
   components: {

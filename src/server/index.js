@@ -18,7 +18,7 @@ export function getList(params) {
     method:"get",
     // 请求携带的参数
     params:{
-      tag:params.tab,
+      tab:params.tab,
       limit:params.limit,
       page:params.page
     }

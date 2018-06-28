@@ -3,12 +3,20 @@
       <section class="section">
         <div class="content-left">
           <header class="header-nav">
-            <span class="active">全部</span>
-            <span>精华</span>
-            <span>分享</span>
-            <span>问答</span>
-            <span>招聘</span>
-            <span>客户端测试</span>
+            <!--<span class="active">全部</span>-->
+            <!--<span>精华</span>-->
+            <!--<span>分享</span>-->
+            <!--<span>问答</span>-->
+            <!--<span>招聘</span>-->
+            <!--<span>客户端测试</span>-->
+            <span
+              v-for="item in navlist"
+              :key="item.id"
+              :class="item.id === state ? 'active' : ''"
+              @click="clickHander(item)"
+            >
+              {{item.name}}
+            </span>
           </header>
           <!--数据列表-->
           <ul class="content-warpper">
@@ -49,11 +57,14 @@
 
     import {getDateTimes} from '@/assets/js/getDateTimes'
     import {tabchange} from '@/assets/js/tab'
+    import indexnavList from '@/assets/js/index-navlist'  //导航列表
 
     export default {
         name: "index",
         data(){
           return {
+            navlist:indexnavList,
+            state:1,
             datalist:[],
             page:1,
             tab:'all',
@@ -63,7 +74,11 @@
       methods:{
           // 数据请求方法
           getdata(){
+            // 配置刷新后导航停留原来的地方
             let tab = this.$route.query.tab  || this.tab;
+            let page = this.$route.query.page*1 || 1;
+            this.state = page;
+
             let params = {
               tab,
               page:this.page,
@@ -78,10 +93,21 @@
               }
               this.datalist = data.data;
             })
-          }
+          },
+
+        // 编程式导航
+        clickHander(obj){
+            this.state = obj.id;
+            this.$router.push({path:'index',query:{tab:obj.url,page:obj.id}})
+        }
       },
       created(){
         this.getdata();
+      },
+      watch:{
+          $route:function (newRouter) {
+            this.getdata();
+          }
       }
     }
 </script>
@@ -123,6 +149,7 @@
     margin: 0 12px;
     font-size: 12px;
     border-radius: 4px;
+    text-align: center;
   }
   .header-nav>span:hover {
     color: #555555;
