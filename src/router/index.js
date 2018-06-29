@@ -8,6 +8,8 @@ import Index from '@/components/index/index'
 import About from '@/components/about/about'
 import Login from '@/components/login/login'
 
+import Details from '@/components/details/details'
+
 let router = new VueRouter({
   mode:'history',
   routes:[
@@ -22,6 +24,10 @@ let router = new VueRouter({
     {
       path:'/login',
       component:Login
+    },
+    {
+      path:'/topic',
+      component:Details
     },
     {
       path:'*',

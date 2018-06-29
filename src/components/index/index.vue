@@ -40,15 +40,17 @@
                 {{item.visit_count}}
               </span>
               <span class="topics" v-if="tab === 'all'">{{item.tab}}</span>
-              <span class="content-title">{{item.title}}</span>
+              <span class="content-title" @click="clickDetails(item)">{{item.title}}</span>
               <span class="content-time">{{item.last_reply_at}}</span>
             </li>
           </ul>
-          <Page :total="100" class="pages"></Page>
-          <!--接下来 引入 iview 进行分页功能-->
+          <Page :total="100" class="pages" :page-size="20" :current="page" @on-change="changePages"></Page>
         </div>
         <div class="content-right">
-
+          <header class="header-content">
+            <p>CNode: Node.js专业中文社区</p>
+            <p class="login">通过 Access Token 登陆</p>
+          </header>
         </div>
       </section>
     </div>
@@ -81,7 +83,9 @@
           getdata(){
             // 配置刷新后导航停留原来的地方
             let tab = this.$route.query.tab  || this.tab;
+            let page = this.$route.query.page*1 || 1;
             this.tab = tab;
+            this.page = page;
 
             let params = {
               tab,
@@ -102,6 +106,23 @@
         // 编程式导航
         clickHander(obj){
             this.$router.push({path:'index',query:{tab:obj.url}})
+        },
+
+        //切换分页  tab 和 query共存,就把之前的对象赋值到当前的query对象
+        changePages(page){
+            this.page = page;
+            let query = this.$route.query;
+            this.$router.push({path:'index',query:{...query,page:this.page}});
+            this.getdata();
+        },
+
+        // 进入主题路由
+        clickDetails(obj){
+            let {author_id} = obj;
+            this.$router.push({path:'topic'});
+            this.$store.commit('succAuthorId',{
+              id:author_id,
+            })
         }
       },
       created(){
@@ -134,9 +155,9 @@
     position: absolute;
     right: 0;
     top: 0;
-    height: 50px;
     width: 290px;
     background: #ffffff;
+    border-radius: 4px;
   }
 
   .header-nav {
@@ -188,6 +209,7 @@
   .content-warpper .number {
     color: #b4b4b4;
     margin: 0 3px;
+    cursor: auto;
   }
   .content-warpper .number>i {
     font-style: normal;
@@ -201,6 +223,7 @@
     color: #999999;
     font-size: 12px;
     margin-right: 13px;
+    cursor: auto;
   }
 
   .content-title {
@@ -215,5 +238,23 @@
   }
   .pages {
     padding: 10px;
+  }
+
+  /*右侧*/
+  .header-content {
+    height: 116px;
+    padding: 18px 10px 10px;
+    font-size: 11px;
+  }
+  .header-content .login {
+    display: inline-block;
+    padding: 11px 9px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 12px;
+    background: #5bc0de;
+    margin-top: 14px;
+    border-radius: 6px;
+    cursor: pointer;
   }
 </style>

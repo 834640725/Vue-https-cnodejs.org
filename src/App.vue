@@ -41,7 +41,7 @@ export default {
   },
   methods:{
     clickHander(){
-      this.$router.push('index')
+      this.$router.push({path:'/index'})
     }
   },
   components: {
