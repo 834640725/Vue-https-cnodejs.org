@@ -8,7 +8,7 @@
               <span>{{userinfo.author['loginname']}}</span>
             </a>
             <p class="big">积分: {{userScore}}</p>
-            <p>此用户没有签名...</p>
+            <p><i>*这家伙很懒,什么都没有留下...*</i></p>
           </div>
         </div>
     </div>
@@ -25,11 +25,7 @@
           }
         },
       created(){
-        console.log(this.userinfo)
+
       }
     }
 </script>
-
-<style scoped>
-
-</style>

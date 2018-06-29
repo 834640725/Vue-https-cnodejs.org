@@ -1,0 +1,25 @@
+.r-title {
+  height: 40px;
+  line-height: 40px;
+  padding-left: 9px;
+  background: #f6f6f6;
+  color: #444444;
+}
+.user_card {
+  padding: 10px;
+}
+.user_card .user-image {
+  line-height: 26px;
+}
+.user_card .user-image img {
+  width: 48px;
+  height: 48px;
+}
+.user_card .user-image span {
+  margin-left: 11px;
+  color: #7780a6;
+}
+.user_card .user-image .big {
+  color: #000;
+  margin-top: 10px;
+}

@@ -117,9 +117,6 @@
         clickDetails(obj){
            let {id,tab} = obj;
            this.$router.push({path:`topic/${id}`})
-
-           // 讲当前对象的Tab同步到vuex,共其他组件用
-           this.$store.commit('saveTabs',tab);
         }
       },
       created(){

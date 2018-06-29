@@ -41,7 +41,6 @@ export default {
   },
   methods:{
     clickHander(){
-      console.log(1)
       this.$router.push({path:'/index', query:{tab:'all'}})
     }
   },
