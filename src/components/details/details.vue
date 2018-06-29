@@ -20,23 +20,23 @@
             <div class="article">
               <div class="markdown-text" v-html="userInfo.content"></div>
             </div>
-
-            <!--评论列表-->
-
           </div>
 
           <div class="section-right">
-            <div class="r-title">作者</div>
-            <div class="user_card">
-              <div class="user-image">
-                <a href="#">
-                  <img src="../../assets/images/icon1.png" alt="">
-                  <span>xinyu12345</span>
-                </a>
-                <p class="big">积分: 395</p>
-                <p>杭州大搜车,狂招Node.js服务端</p>
-              </div>
-            </div>
+            <!--<div class="r-title">作者</div>-->
+            <!--<div class="user_card">-->
+              <!--<div class="user-image">-->
+                <!--<a href="#" v-if="userInfo.author">-->
+                  <!--<img :src="userInfo.author['avatar_url']" alt="">-->
+                  <!--<span>{{userInfo.author['loginname']}}</span>-->
+                <!--</a>-->
+                <!--<p class="big">积分: {{authorData.score}}</p>-->
+                <!--<p>此用户没有签名...</p>-->
+              <!--</div>-->
+            <!--</div>-->
+            <Userinfo :score="authorInfo.score" :userInfo="userInfo" v-if="authorInfo.githubUsername">
+              <div class="r-title">作者</div>
+            </Userinfo>
           </div>
         </section>
     </div>
@@ -44,13 +44,20 @@
 
 <script>
 
-  import {getDateTimes} from '@/assets/js/getDateTimes.js'
+  import {getDateTimes} from '@/assets/js/getDateTimes'
+  import {tabchange} from '@/assets/js/tab'
+
+  import Userinfo from '@/iview/authorInfo/authorInfo'
 
     export default {
       data(){
         return{
           userInfo:{},
+          authorInfo:{},  //作者信息
         }
+      },
+      components:{
+        Userinfo,
       },
       created(){
          let id = this.$route.params.id;
@@ -60,9 +67,16 @@
            accesstoken:''
          };
          if(id){
-           this.http.getTopicId(params).then(({data}) => {
+            this.http.getTopicId(params).then(({data}) => {
               getDateTimes(data);
+              tabchange(data);
               this.userInfo = data.data;
+              return this.userInfo.author['loginname']
+            })
+           .then((loginname) => {
+              this.http.getLoginNames({name:loginname}).then(({data}) => {
+                 this.authorInfo = data.data;
+              })
            })
          }else{
            this.$router.push({path:'/index'})

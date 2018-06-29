@@ -43,11 +43,21 @@ export function getTopicId(params){
   })
 }
 
+/*
+* 作者信息数据请求
+* get /user/:loginname 用户详情
+  示例：/api/v1/user/alsotang
+* */
+export function getLoginNames(params){
+  return respons(`/user/${params.name}`)
+}
+
 export default {
   install(Vue){
     Vue.prototype.http = {
       getList,
-      getTopicId
+      getTopicId,
+      getLoginNames,
     }
   }
 }

@@ -41,7 +41,8 @@ export default {
   },
   methods:{
     clickHander(){
-      this.$router.push({path:'/index'})
+      console.log(1)
+      this.$router.push({path:'/index', query:{tab:'all'}})
     }
   },
   components: {

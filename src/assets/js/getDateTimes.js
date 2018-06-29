@@ -38,7 +38,7 @@ function convert(obj,key){
     }
 
     else if(t > 31){
-      let dateObj = t;
+      let dateObj = items;
       // 获取到 2018/4/10格式的时间
       let newTimer = new Date(dateObj*1000).toLocaleString().split(' ')[0].split('/').join(' /');
       obj[key] = newTimer;

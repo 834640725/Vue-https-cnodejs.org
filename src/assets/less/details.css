@@ -87,3 +87,6 @@
   padding: 2px;
   overflow: auto;
 }
+.article .markdown-text img {
+  max-width: 800px;
+}

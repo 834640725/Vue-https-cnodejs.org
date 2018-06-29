@@ -34,17 +34,14 @@
             <li v-for="item,index in datalist" :key="Math.random()">
               <img :src="item.author['avatar_url']" alt="" class="user-image">
               <span class="number">
-              <i>
-                {{item.reply_count}} /
-              </i>
-                {{item.visit_count}}
+              <i>{{item.reply_count}}/</i>{{item.visit_count}}
               </span>
-              <span class="topics" v-if="tab === 'all'">{{item.tab}}</span>
-              <span class="content-title" @click="clickDetails(item)">{{item.title}}</span>
+              <span class="topics" v-if="tab === 'all' && item.tab">{{item.tab}}</span>
+              <span class="content-title" @click="clickDetails(item)" :title="item.title">{{item.title}}</span>
               <span class="content-time">{{item.last_reply_at}}</span>
             </li>
           </ul>
-          <Page :total="100" class="pages" :page-size="20" :current="page" @on-change="changePages"></Page>
+          <Page :total="6000" class="pages" :page-size="20" :current="page" @on-change="changePages"></Page>
         </div>
         <div class="content-right">
           <header class="header-content">
@@ -118,8 +115,11 @@
 
         // 进入主题路由
         clickDetails(obj){
-           let {id} = obj;
+           let {id,tab} = obj;
            this.$router.push({path:`topic/${id}`})
+
+           // 讲当前对象的Tab同步到vuex,共其他组件用
+           this.$store.commit('saveTabs',tab);
         }
       },
       created(){
@@ -205,7 +205,7 @@
 
   .content-warpper .number {
     color: #b4b4b4;
-    margin: 0 3px;
+    margin: 0 4px 0 8px;
     cursor: auto;
   }
   .content-warpper .number>i {
@@ -232,6 +232,7 @@
 
   .content-time {
     float: right;
+    font-size: 12px;
   }
   .pages {
     padding: 10px;
