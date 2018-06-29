@@ -5,11 +5,11 @@ Vue.use(Vuex);
 
 let store = new Vuex.Store({
   state:{
-    detailsId:"",
+    id:"",
   },
   mutations:{
     succAuthorId(state,params){
-      state.detailsId = params.id;
+      state.id = params.id;
     }
   },
   actions:{

@@ -118,11 +118,8 @@
 
         // 进入主题路由
         clickDetails(obj){
-            let {author_id} = obj;
-            this.$router.push({path:'topic'});
-            this.$store.commit('succAuthorId',{
-              id:author_id,
-            })
+           let {id} = obj;
+           this.$router.push({path:`topic/${id}`})
         }
       },
       created(){

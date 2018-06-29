@@ -26,7 +26,7 @@ let router = new VueRouter({
       component:Login
     },
     {
-      path:'/topic',
+      path:'/topic/:id',
       component:Details
     },
     {
