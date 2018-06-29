@@ -12,7 +12,7 @@
             <span
               v-for="item in navlist"
               :key="item.id"
-              :class="item.id === state ? 'active' : ''"
+              :class="item.url === tab ? 'active' : ''"
               @click="clickHander(item)"
             >
               {{item.name}}
@@ -39,12 +39,13 @@
               </i>
                 {{item.visit_count}}
               </span>
-              <span class="topics">{{item.tab}}</span>
+              <span class="topics" v-if="tab === 'all'">{{item.tab}}</span>
               <span class="content-title">{{item.title}}</span>
               <span class="content-time">{{item.last_reply_at}}</span>
             </li>
           </ul>
-          <div style="height: 30px; background: blue">分页</div>
+          <Page :total="100" class="pages"></Page>
+          <!--接下来 引入 iview 进行分页功能-->
         </div>
         <div class="content-right">
 
@@ -59,25 +60,28 @@
     import {tabchange} from '@/assets/js/tab'
     import indexnavList from '@/assets/js/index-navlist'  //导航列表
 
+    import { Page } from 'iview'
+
     export default {
         name: "index",
         data(){
           return {
             navlist:indexnavList,
-            state:1,
             datalist:[],
             page:1,
             tab:'all',
             limit:40,
           }
         },
+      components:{
+        Page,
+      },
       methods:{
           // 数据请求方法
           getdata(){
             // 配置刷新后导航停留原来的地方
             let tab = this.$route.query.tab  || this.tab;
-            let page = this.$route.query.page*1 || 1;
-            this.state = page;
+            this.tab = tab;
 
             let params = {
               tab,
@@ -97,8 +101,7 @@
 
         // 编程式导航
         clickHander(obj){
-            this.state = obj.id;
-            this.$router.push({path:'index',query:{tab:obj.url,page:obj.id}})
+            this.$router.push({path:'index',query:{tab:obj.url}})
         }
       },
       created(){
@@ -209,5 +212,8 @@
 
   .content-time {
     float: right;
+  }
+  .pages {
+    padding: 10px;
   }
 </style>

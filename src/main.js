@@ -9,6 +9,7 @@ import router from '@/router'
 import http from '@/server'
 Vue.use(http);
 
+import 'iview/dist/styles/iview.css';
 
 Vue.config.productionTip = false;
 

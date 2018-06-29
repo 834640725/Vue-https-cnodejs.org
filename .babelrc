@@ -8,5 +8,11 @@
     }],
     "stage-2"
   ],
-  "plugins": ["transform-vue-jsx", "transform-runtime"]
+  // iview 按需引入
+  "plugins": [
+    ["transform-vue-jsx", "transform-runtime"],
+    ["import", {
+    "libraryName": "iview",
+    "libraryDirectory": "src/components"
+  }]]
 }
