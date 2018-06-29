@@ -33,6 +33,10 @@
   height: 48px;
   margin: 10px 10px 10px 0;
 }
+.user-content .section .user-left .nav .user-big span {
+  font-size: 16px;
+  color: #778087;
+}
 .user-content .section .user-left .nav .user-big .big {
   line-height: 24px;
   color: #333333;

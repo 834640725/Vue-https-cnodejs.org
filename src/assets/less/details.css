@@ -43,6 +43,44 @@
 .details-content .section-left .header-info span {
   margin-right: 4px;
 }
+.details-content .section-left .user-replies {
+  background: #e1e1e1;
+  padding: 13px 0;
+}
+.details-content .section-left .user-replies .rep-header {
+  height: 40px;
+  padding-left: 10px;
+  background: #f6f6f6;
+  line-height: 40px;
+  color: #444444;
+}
+.details-content .section-left .user-replies .rep-list {
+  background: #ffffff;
+}
+.details-content .section-left .user-replies .rep-list li {
+  padding: 10px;
+  margin: 1px 0;
+  cursor: pointer;
+  position: relative;
+}
+.details-content .section-left .user-replies .rep-list li .rep-image {
+  width: 30px;
+  height: 30px;
+}
+.details-content .section-left .user-replies .rep-list li .mkdown-text {
+  padding: 0 40px;
+  margin-top: -8px;
+  font-size: 13px;
+  color: #333333;
+}
+.details-content .section-left .user-replies .rep-list li .asslogin {
+  position: absolute;
+  right: 13px;
+  top: 18px;
+}
+.details-content .section-left .user-replies .rep-list li .asslogin span {
+  margin-left: 6px;
+}
 .details-content .section-right {
   width: 290px;
   height: 170px;

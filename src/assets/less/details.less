@@ -47,6 +47,54 @@
         margin-right: 4px;
       }
     }
+
+
+    // 评论
+    .user-replies {
+      background: #e1e1e1;
+      padding: 13px 0;
+      .rep-header {
+          height: 40px;
+          padding-left: 10px;
+          background: #f6f6f6;
+          line-height: 40px;
+          color: #444444;
+      }
+
+      .rep-list {
+        background: #ffffff;
+
+        li {
+          padding: 10px;
+          margin: 1px 0;
+          cursor: pointer;
+          position: relative;
+
+          .rep-image {
+            width: 30px;
+            height: 30px;
+          }
+
+          .mkdown-text {
+            padding: 0 40px;
+            margin-top: -8px;
+            font-size: 13px;
+            color: #333333;
+          }
+
+          // 点赞功能 asslogin
+          .asslogin {
+            position: absolute;
+            right: 13px;
+            top: 18px;
+
+            span {
+              margin-left: 6px;
+            }
+          }
+        }
+      }
+    }
   }
   //左浮动结束
 

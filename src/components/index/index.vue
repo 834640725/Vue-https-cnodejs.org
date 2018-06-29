@@ -90,7 +90,7 @@
               limit:this.limit
             };
             this.http.getList(params).then(({data}) => {
-              getDateTimes(data);
+              getDateTimes(data,'last_reply_at');
 
               // 全部的时候,进行转码
               if(tab === 'all'){

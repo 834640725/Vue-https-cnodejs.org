@@ -64,17 +64,17 @@ function convert(obj,key){
 
 
 
-export function getDateTimes(data){
+export function getDateTimes(data,key){
   let datalist = data.data;
 
   if(!Array.isArray(datalist)){
-    convert(datalist,'create_at');
+    convert(datalist,key);
     return;
   }
 
   // 转换时间格式数据为数组
   datalist.forEach(item => {
-    convert(item,'last_reply_at')
+    convert(item,key)
   })
 
 
