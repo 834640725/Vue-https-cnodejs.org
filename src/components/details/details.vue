@@ -70,6 +70,7 @@
 
   import {getDateTimes} from '@/assets/js/getDateTimes'
   import {tabchange} from '@/assets/js/tab'
+  import Cookies from 'js-cookie'
 
   import Userinfo from '@/iview/authorInfo/authorInfo'
 
@@ -88,7 +89,7 @@
 
         // 点赞
         clickFabulous(obj){
-          obj.is_uped = !obj.is_uped;
+
 
           let isLogin = this.$store.state.userLogin;
           if(isLogin){
@@ -97,9 +98,19 @@
              *@ reply_id  params
              */
 
+              // cookie中存储的用户id和评论中的用户id不一致,通过名称判断
+            let youSelf = this.$store.state.youSelf;
+            // 判断不能自己给自己的评论点赞
+            if(youSelf.loginname === obj.author['loginname']){
+               alert('哈哈哈,自己给自己点赞被我逮到了~~~');
+               return;
+            }
+
+
+            obj.is_uped = !obj.is_uped;
+
             let accesstoken = this.$store.state.usersaveAccess;
             let id = obj.id;
-
             let params = {
               accesstoken,
               id,

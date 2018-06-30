@@ -74,15 +74,17 @@ export default {
       }else{
         this.$route.meta.login = false;
       }
+
+      // 页面刷新,获取本地cookie,同步route的meta。再同步vuex状态,供其他组件共享
+      let routeisLogin = this.$route.meta.login;
+      this.$store.commit('loginSuccess',{
+        state:routeisLogin,
+        AccessToken:name.AccessToken,
+      });
+
+      this.$store.commit('savaYouSelf',name)
+
     }
-
-
-    // 页面刷新,获取本地cookie,同步route的meta。再同步vuex状态,供其他组件共享
-    let routeisLogin = this.$route.meta.login;
-    this.$store.commit('loginSuccess',{
-       state:routeisLogin,
-       AccessToken:name.AccessToken,
-    })
 
   },
 }
