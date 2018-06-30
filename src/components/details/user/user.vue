@@ -45,9 +45,9 @@
 
       </div>
       <div class="user-right">
-        <!--<authorInfo>-->
-          <!--<div class="r-title">个人信息</div>-->
-        <!--</authorInfo>-->
+        <authorInfo :authorInfo="userSuccess" v-if="userSuccess.githubUsername">
+          <div class="r-title">个人信息</div>
+        </authorInfo>
       </div>
     </section>
     <div style="height: 300px;"></div>
@@ -57,6 +57,8 @@
 <script>
     import {getDateTimes} from '@/assets/js/getDateTimes'
     import authorInfo from '@/iview/authorInfo/authorInfo'
+
+
     export default {
         name: "user",
         data(){

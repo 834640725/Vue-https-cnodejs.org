@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "dayjs": "^1.6.10",
+    "editor": "github:lepture/editor",
     "iview": "^2.14.3",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",

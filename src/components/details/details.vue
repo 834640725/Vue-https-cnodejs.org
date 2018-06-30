@@ -36,6 +36,7 @@
                   </div>
 
                   <!--接下来该写markdown文本编辑器和登陆-->
+                  <textarea id="editor"></textarea>
 
                 </li>
               </ul>
@@ -54,7 +55,7 @@
                 <!--<p>此用户没有签名...</p>-->
               <!--</div>-->
             <!--</div>-->
-            <Userinfo :score="authorInfo.score" :userInfo="userInfo" v-if="authorInfo.githubUsername">
+            <Userinfo :authorInfo="authorInfo" v-if="authorInfo.githubUsername">
               <div class="r-title">作者</div>
             </Userinfo>
           </div>
@@ -102,6 +103,7 @@
            .then((loginname) => {
               this.http.getLoginNames({name:loginname}).then(({data}) => {
                  this.authorInfo = data.data;
+                 console.log(this.authorInfo)
               })
            })
          }else{
