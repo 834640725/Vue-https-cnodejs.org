@@ -24,7 +24,7 @@
             <li v-for="item in userSuccess.recent_topics">
               <img :src="userSuccess.avatar_url" alt="" class="img">
               <span>12/97</span>
-              <a href="#" @click.prevent>{{item.title}}</a>
+              <a href="#" @click.prevent="clickDetails(item)">{{item.title}}</a>
             </li>
           </ul>
         </div>
@@ -35,9 +35,13 @@
           <!--<div class="bit-header">{{hasRecent}}</div>-->
           <ul class="list" v-if="length">
             <li v-for="item in userSuccess.recent_replies">
-              <img :src="item.author['avatar_url']" alt="" class="img" :data-username="item.author['loginname']">
+              <img
+                :src="item.author['avatar_url']" alt="" class="img"
+                :data-username="item.author['loginname']"
+                @click="clickUserInfo(item)"
+              >
               <span>2/43</span>
-              <a href="#" @click.prevent>{{item.title}}</a>
+              <a href="#" @click.prevent="clickDetails(item)">{{item.title}}</a>
             </li>
           </ul>
           <p class="subject" v-if="!length">无话题</p>
@@ -71,6 +75,31 @@
       methods:{
         clickHander(){
           this.$router.push({path:'/index', query:{tab:'all'}})
+        },
+
+        // 根据id 进入到文章内容
+        clickDetails(obj){
+          let {id} = obj;
+          this.$router.push({path:`/topic/${id}`})
+        },
+
+        // 参与的话题,头像进入用户信息组件
+        clickUserInfo(obj){
+          let loginname = obj.author['loginname'];
+          this.$router.replace({path:`/user/${loginname}`})
+        },
+
+        // 当前组件路由发生变化调用
+        axiosUserInfo(){
+            let userName = this.$route.params.name;
+            this.http.getLoginNames({name:userName}).then(({data}) => {
+              getDateTimes(data,'create_at');  //转注册时间格式
+              this.userSuccess = data.data;
+              return this.userSuccess;
+
+            }).then((data) => {
+              this.length = data.recent_replies.length;
+            })
         }
       },
 
@@ -83,16 +112,15 @@
         },
       },
       created(){
-        let userName = this.$route.params.name;
-        this.http.getLoginNames({name:userName}).then(({data}) => {
-            getDateTimes(data,'create_at');  //转注册时间格式
-            this.userSuccess = data.data;
-            console.log(this.userSuccess);
-            return this.userSuccess;
+         this.axiosUserInfo();
+      },
 
-        }).then((data) => {
-            this.length = data.recent_replies.length;
-        })
+      // 监听路由发生变化,重新请求用户数据
+      watch:{
+          $route:function (newRoute) {
+            window.scrollTo(0,0);
+            this.axiosUserInfo();
+          }
       }
     }
 </script>

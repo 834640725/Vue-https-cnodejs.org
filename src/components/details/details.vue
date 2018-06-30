@@ -10,7 +10,7 @@
               <div class="header-info">
                 <span>● 发布于 {{userInfo.create_at}}</span>
                 <span v-if="userInfo.author">
-                  ● 作者: <a href="#" target="_blank" @click.prevent="clickUser">{{userInfo.author['loginname']}}</a>
+                  ● 作者: <a href="#" target="_blank" @click.prevent="clickUser(userInfo)">{{userInfo.author['loginname']}}</a>
                 </span>
                 <span>● {{userInfo.visit_count}} 次浏览</span>
                 <span>● 来自 {{userInfo.tab}}</span>
@@ -22,21 +22,21 @@
             </div>
 
             <div class="user-replies">
-              <header class="rep-header">6 回复</header>
+              <header class="rep-header">{{userInfo.reply_count}} 回复</header>
               <ul class="rep-list">
-                <li>
-                  <img src="../../assets/images/icon1.png" alt="" class="rep-image">
-                   <span>cctv10005 <a href="#">1楼● 2 天前 </a></span>
-                   <div class="mkdown-text">
-                     ssssssssssssssssssss
+                <li v-for="(item,index) in userInfo.replies">
+                   <div @click="clickUser(item)">
+                     <img :src="item.author['avatar_url']" alt="" class="rep-image">
+                     <strong>{{item.author['loginname']}} <a href="#" @click.prevent>{{index+1}}楼● 2 天前 </a></strong>
                    </div>
+                   <div class="mkdown-text" v-html="item.content"></div>
                   <div class="asslogin">
-                    <span class="thumbs-up"><a href="#">点赞</a> 1</span>
+                    <span class="thumbs-up"><a href="#">点赞</a> <i></i></span>
                     <span><a href="#">回复</a></span>
                   </div>
 
                   <!--接下来该写markdown文本编辑器和登陆-->
-                  <textarea id="editor"></textarea>
+
 
                 </li>
               </ul>
@@ -73,13 +73,14 @@
     export default {
       data(){
         return{
-          userInfo:{},
+          userInfo:{},   // 评论数据 replies
           authorInfo:{},  //作者信息
         }
       },
       methods:{
-        clickUser(){
-          this.$router.push({path:`/user/${this.userInfo.author['loginname']}`})
+        clickUser(obj){
+          let userLoginname = obj.author['loginname'] || this.userInfo.author['loginname'];
+          this.$router.push({path:`/user/${userLoginname}`})
         }
       },
       components:{
@@ -103,7 +104,6 @@
            .then((loginname) => {
               this.http.getLoginNames({name:loginname}).then(({data}) => {
                  this.authorInfo = data.data;
-                 console.log(this.authorInfo)
               })
            })
          }else{

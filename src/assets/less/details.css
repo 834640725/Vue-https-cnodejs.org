@@ -62,6 +62,7 @@
   margin: 1px 0;
   cursor: pointer;
   position: relative;
+  border-bottom: solid 1px #f0f0f0;
 }
 .details-content .section-left .user-replies .rep-list li .rep-image {
   width: 30px;
@@ -72,6 +73,7 @@
   margin-top: -8px;
   font-size: 13px;
   color: #333333;
+  line-height: 24px;
 }
 .details-content .section-left .user-replies .rep-list li .asslogin {
   position: absolute;
@@ -80,6 +82,10 @@
 }
 .details-content .section-left .user-replies .rep-list li .asslogin span {
   margin-left: 6px;
+}
+.details-content .section-left .user-replies .rep-list li strong {
+  padding-left: 10px;
+  color: #666;
 }
 .details-content .section-right {
   width: 290px;
