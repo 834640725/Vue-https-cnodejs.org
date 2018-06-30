@@ -21,12 +21,14 @@
            </p>
          </section>
       </footer>
+    <BackTop></BackTop>
   </div>
 </template>
 
 <script>
 
   import Cookies from 'js-cookie'
+  import {BackTop} from 'iview'
 
 export default {
   name: 'App',
@@ -34,6 +36,9 @@ export default {
     return {
 
     }
+  },
+  components:{
+    BackTop,
   },
   methods:{
     clickHander(){
@@ -44,7 +49,10 @@ export default {
       if(this.$store.state.userLogin){
         // 退出
         Cookies.remove('name');
-        this.$store.commit('loginSuccess',false)
+        this.$store.commit('loginSuccess',{
+          state:false,
+          AccessToken:"",
+        })
 
       }else{
         // 登陆
@@ -60,7 +68,7 @@ export default {
   created(){
     let name = Cookies.get('name');
     if(name){
-      name = JSON.parse(name)
+      name = JSON.parse(name);
       if(name.loginname){
         this.$route.meta.login = true;
       }else{
@@ -71,7 +79,10 @@ export default {
 
     // 页面刷新,获取本地cookie,同步route的meta。再同步vuex状态,供其他组件共享
     let routeisLogin = this.$route.meta.login;
-    this.$store.commit('loginSuccess',routeisLogin)
+    this.$store.commit('loginSuccess',{
+       state:routeisLogin,
+       AccessToken:name.AccessToken,
+    })
 
   },
 }

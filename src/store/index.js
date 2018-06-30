@@ -6,10 +6,12 @@ Vue.use(Vuex);
 let store = new Vuex.Store({
   state:{
      userLogin:false,
+     usersaveAccess:"",
   },
   mutations:{
-    loginSuccess(state,isLogin){
-      state.userLogin = isLogin;
+    loginSuccess(state,params){
+      state.userLogin = params.state;
+      state.usersaveAccess = params.AccessToken
     }
   },
   actions:{

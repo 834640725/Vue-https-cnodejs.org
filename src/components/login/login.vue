@@ -3,7 +3,7 @@
   <section class="login-section clearfix">
     <div class="login-left">
       <header class="left-header">
-        <a href="#">主页</a> / 登陆
+        <a href="#" @click.prevent="clickIndex">主页</a> / 登陆
       </header>
       <div class="left-warp">
         <p class="access">
@@ -70,9 +70,19 @@
           // 已经输入账号,确保不为空
           this.http.getUserInfo({accesstoken:this.AccessToken}).then(({data}) => {
 
+            /**
+             * 用户登陆之后,应当把AccessToken存到cookie中
+             */
+
+            data.AccessToken = this.AccessToken;
+
             Cookies.set('name', data, { expires: 7 });
 
-            this.$store.commit('loginSuccess',true);  //登陆成功
+            this.$store.commit('loginSuccess',{
+              state:true,
+              AccessToken:this.AccessToken,
+            });
+
 
             this.$router.push({path:'/index', query:{tab:'all'}})
 
@@ -89,6 +99,11 @@
 
         closeHander(e){
           this.showError = e;
+        },
+
+        // init index home
+        clickIndex(){
+          this.$router.push({path:'/index', query:{tab:'all'}})
         }
       },
 

@@ -37,8 +37,8 @@ export function getTopicId(params){
     method:"get",
     url:`/topic/${params.id}`,
     params:{
-      'mdrender':params.mk,
-      'accesstoken ':params.accesstoken,  //用户登陆
+      mdrender:params.mk,
+      accesstoken:params.accesstoken,  //用户登陆
     }
   })
 }
@@ -68,6 +68,25 @@ export function getUserInfo(params){
    })
 }
 
+/**
+ * 给评论点赞:
+ *  post /reply/:reply_id/ups 为评论点赞
+ *  接受 post 参数
+    accesstoken String
+    接口会自动判断用户是否已点赞，如果否，则点赞；如果是，则取消点赞。点赞的动作反应在返回数据的 action 字段中，up or down。
+    返回值示例
+    @params type object
+ */
+export function getFabulous(params){
+  return respons({
+    method:"post",
+    url:`/reply/${params.id}/ups`,
+    data:{
+      accesstoken:params.accesstoken,
+    }
+  })
+}
+
 
 export default {
   install(Vue){
@@ -76,6 +95,7 @@ export default {
       getTopicId,
       getLoginNames,
       getUserInfo,
+      getFabulous
     }
   }
 }

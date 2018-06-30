@@ -31,12 +31,15 @@
                    </div>
                    <div class="mkdown-text" v-html="item.content"></div>
                   <div class="asslogin">
-                    <span class="thumbs-up"><a href="#">点赞</a> <i></i></span>
+                    <span class="thumbs-up">
+                      <a href="#" @click.prevent="clickFabulous(item)" v-if="!item.is_uped">点赞</a>
+                      <a href="#" @click.prevent="clickFabulous(item)" v-if="item.is_uped">取消</a>
+                      <i>{{item.ups.length}}</i>
+                    </span>
                     <span><a href="#">回复</a></span>
                   </div>
 
                   <!--接下来该写markdown文本编辑器和登陆-->
-
 
                 </li>
               </ul>
@@ -81,17 +84,55 @@
         clickUser(obj){
           let userLoginname = obj.author['loginname'];
           this.$router.push({path:`/user/${userLoginname}`})
+        },
+
+        // 点赞
+        clickFabulous(obj){
+          obj.is_uped = !obj.is_uped;
+
+          let isLogin = this.$store.state.userLogin;
+          if(isLogin){
+            /**
+             *@ AccessToken String
+             *@ reply_id  params
+             */
+
+            let accesstoken = this.$store.state.usersaveAccess;
+            let id = obj.id;
+
+            let params = {
+              accesstoken,
+              id,
+            };
+
+            this.http.getFabulous(params).then(({data}) => {
+                if(data.action === 'up'){
+                  // 点赞
+                  obj.ups.push(obj.id)
+                }else{
+                  obj.ups = obj.ups.filter(item => item !== obj.id);
+                }
+            })
+
+          }else{
+            this.$router.push({path:'/login'})
+          }
         }
       },
       components:{
         Userinfo,
       },
+
+      computed:{
+
+      },
       created(){
+        //accesstoken String 当需要知道一个主题是否被特定用户收藏以及对应评论是否被特定用户点赞时，才需要带此参数。会影响返回值中的 is_collect           以及 replies 列表中的 is_uped 值。
          let id = this.$route.params.id;
          let params = {
            id,
            mk:true,
-           accesstoken:''
+           accesstoken:this.$store.state.usersaveAccess,
          };
          if(id){
             this.http.getTopicId(params).then(({data}) => {
