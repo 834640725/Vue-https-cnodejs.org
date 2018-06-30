@@ -71,6 +71,9 @@
           this.http.getUserInfo({accesstoken:this.AccessToken}).then(({data}) => {
 
             Cookies.set('name', data, { expires: 7 });
+
+            this.$store.commit('loginSuccess',true);  //登陆成功
+
             this.$router.push({path:'/index', query:{tab:'all'}})
 
           })

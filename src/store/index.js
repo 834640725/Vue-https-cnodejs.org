@@ -5,10 +5,12 @@ Vue.use(Vuex);
 
 let store = new Vuex.Store({
   state:{
-     myInfo:{},
+     userLogin:false,
   },
   mutations:{
-
+    loginSuccess(state,isLogin){
+      state.userLogin = isLogin;
+    }
   },
   actions:{
 

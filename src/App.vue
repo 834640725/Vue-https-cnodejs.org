@@ -4,13 +4,9 @@
         <div class="header-content">
           <img src="./assets/images/cnodejs_light.svg" alt="" class="header-logo" @click="clickHander">
           <ul class="header-nav">
-            <router-link tag="li"
-                         v-for="item in navList"
-                         :key="item.id"
-                         :to="item.url"
-            >
-            {{item.title}}
-            </router-link>
+            <li @click="clickHander">首页</li>
+            <li>关于</li>
+            <li @click="clickLogin">{{isLogin}}</li>
           </ul>
         </div>
       </header>
@@ -30,23 +26,54 @@
 
 <script>
 
-  import headerNavlist from '@/assets/js/header-nav-list.js'
+  import Cookies from 'js-cookie'
 
 export default {
   name: 'App',
   data(){
     return {
-      navList:headerNavlist,
+
     }
   },
   methods:{
     clickHander(){
       this.$router.push({path:'/index', query:{tab:'all'}})
+    },
+    // 登陆 and 退出
+    clickLogin(){
+      if(this.$store.state.userLogin){
+        // 退出
+        Cookies.remove('name');
+        this.$store.commit('loginSuccess',false)
+
+      }else{
+        // 登陆
+        this.$router.push({path:'/login'})
+      }
     }
   },
-  components: {
+  computed:{
+    isLogin(){
+      return this.$store.state.userLogin ? "退出" : "登陆"
+    }
+  },
+  created(){
+    let name = Cookies.get('name');
+    if(name){
+      name = JSON.parse(name)
+      if(name.loginname){
+        this.$route.meta.login = true;
+      }else{
+        this.$route.meta.login = false;
+      }
+    }
 
-  }
+
+    // 页面刷新,获取本地cookie,同步route的meta。再同步vuex状态,供其他组件共享
+    let routeisLogin = this.$route.meta.login;
+    this.$store.commit('loginSuccess',routeisLogin)
+
+  },
 }
 </script>
 

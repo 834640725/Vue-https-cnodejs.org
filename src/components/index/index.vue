@@ -32,7 +32,7 @@
               <!--<span class="content-time">1 小时前</span>-->
             <!--</li>-->
             <li v-for="item,index in datalist" :key="Math.random()">
-              <img :src="item.author['avatar_url']" alt="" class="user-image">
+              <img :src="item.author['avatar_url']" alt="" class="user-image" @click.prevent="goUserClick(item)">
               <span class="number">
               <i>{{item.reply_count}}/</i>{{item.visit_count}}
               </span>
@@ -146,11 +146,17 @@
         // 进入登陆
         clickLogins(){
             this.$router.push({path:'/login'})
+        },
+
+        // 首页列表,点击头像查看用户信息
+        goUserClick(obj){
+           let loginname = obj.author['loginname'];
+           this.$router.push({path:`/user/${loginname}`})
         }
       },
       computed:{
         isLogin(){
-          return this.$route.meta.login;
+          return this.$store.state.userLogin;
         }
       },
 
@@ -163,7 +169,7 @@
           if(name.loginname){
             this.$route.meta.login = true;
             this.authorInfo = name;
-            this.getUserinfo(name.loginname)
+            this.getUserinfo(name.loginname)  //用户积分
           }else{
             this.$route.meta.login = false;
           }
@@ -181,125 +187,4 @@
 
 <style lang="less">
   @import "../../assets/less/index/index";
-  /*.index {*/
-    /*background: #e1e1e1;*/
-    /*padding: 20px 0;*/
-  /*}*/
-  /*.section {*/
-    /*max-width: 1400px;*/
-    /*margin: 0 auto;*/
-    /*background: #e1e1e1;*/
-    /*position: relative;*/
-  /*}*/
-  /*.content-left {*/
-    /*margin-right: 300px;*/
-    /*background: #ffffff;*/
-  /*}*/
-  /*.content-right {*/
-    /*position: absolute;*/
-    /*right: 0;*/
-    /*top: 0;*/
-    /*width: 290px;*/
-    /*background: #ffffff;*/
-    /*border-radius: 4px;*/
-  /*}*/
-
-  /*.header-nav {*/
-    /*height: 40px;*/
-    /*line-height: 40px;*/
-    /*padding: 0 8px;*/
-    /*cursor: pointer;*/
-    /*background: #f6f6f6;*/
-  /*}*/
-  /*.header-nav>span {*/
-    /*padding: 6px 4px;*/
-    /*color: #80bd01;*/
-    /*margin: 0 12px;*/
-    /*font-size: 12px;*/
-    /*border-radius: 4px;*/
-    /*text-align: center;*/
-  /*}*/
-  /*.header-nav>span:hover {*/
-    /*color: #555555;*/
-  /*}*/
-  /*.header-nav>span.active {*/
-    /*background: #80bd01;*/
-    /*color: #ffffff;*/
-  /*}*/
-
-  /*.content-warpper>li {*/
-    /*height: 50px;*/
-    /*line-height: 50px;*/
-    /*padding: 0 10px;*/
-    /*border-bottom: solid 1px #f0f0f0;*/
-    /*cursor: pointer;*/
-    /*font-size: 15px;*/
-  /*}*/
-  /*.content-warpper>li:last-child {*/
-    /*border-bottom: none;*/
-  /*}*/
-
-  /*.content-warpper>li:hover {*/
-    /*background: #f5f5f5;*/
-  /*}*/
-
-  /*.user-image {*/
-    /*width: 30px;*/
-    /*height: 30px;*/
-    /*border-radius: 4px;*/
-    /*vertical-align: middle;*/
-  /*}*/
-
-  /*.content-warpper .number {*/
-    /*color: #b4b4b4;*/
-    /*margin: 0 4px 0 8px;*/
-    /*cursor: auto;*/
-  /*}*/
-  /*.content-warpper .number>i {*/
-    /*font-style: normal;*/
-    /*color: #000;*/
-  /*}*/
-  /*.content-warpper .topics {*/
-    /*padding: 4px;*/
-    /*background: #e5e5e5;*/
-    /*border-radius: 4px;*/
-    /*text-align: center;*/
-    /*color: #999999;*/
-    /*font-size: 12px;*/
-    /*margin-right: 13px;*/
-    /*cursor: auto;*/
-  /*}*/
-
-  /*.content-title {*/
-    /*color: #333333;*/
-  /*}*/
-  /*.content-title:hover {*/
-    /*text-decoration: underline;*/
-  /*}*/
-
-  /*.content-time {*/
-    /*float: right;*/
-    /*font-size: 12px;*/
-  /*}*/
-  /*.pages {*/
-    /*padding: 10px;*/
-  /*}*/
-
-  /*!*右侧*!*/
-  /*.header-content {*/
-    /*height: 116px;*/
-    /*padding: 18px 10px 10px;*/
-    /*font-size: 11px;*/
-  /*}*/
-  /*.header-content .login {*/
-    /*display: inline-block;*/
-    /*padding: 11px 9px;*/
-    /*text-align: center;*/
-    /*color: #ffffff;*/
-    /*font-size: 12px;*/
-    /*background: #5bc0de;*/
-    /*margin-top: 14px;*/
-    /*border-radius: 6px;*/
-    /*cursor: pointer;*/
-  /*}*/
 </style>
