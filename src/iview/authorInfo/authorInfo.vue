@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="authorInfoss">
       <slot></slot>
         <div class="user_card">
           <div class="user-image">

@@ -41,13 +41,19 @@
               <span class="content-time">{{item.last_reply_at}}</span>
             </li>
           </ul>
+
           <Page :total="6000" class="pages" :page-size="20" :current="page" @on-change="changePages"></Page>
         </div>
         <div class="content-right">
-          <header class="header-content">
+          <header class="header-content" v-if="!isLogin">
             <p>CNode: Node.js专业中文社区</p>
             <p class="login" @click="clickLogins">通过 Access Token 登陆</p>
           </header>
+
+          <authorComponent :authorInfo="authorInfo" v-if="isLogin">
+            <div class="r-title">个人信息</div>
+          </authorComponent>
+
         </div>
       </section>
     </div>
@@ -59,7 +65,12 @@
     import {tabchange} from '@/assets/js/tab'
     import indexnavList from '@/assets/js/index-navlist'  //导航列表
 
+    import authorComponent from '@/iview/authorInfo/authorInfo'
+
     import { Page } from 'iview'
+    import Cookies from 'js-cookie'
+
+
 
     export default {
         name: "index",
@@ -70,11 +81,16 @@
             page:1,
             tab:'all',
             limit:40,
+            authorInfo:{},  //当前用户登陆的数据
+            userallData:{}, //当前用户的详细信息
           }
         },
+
       components:{
         Page,
+        authorComponent,
       },
+
       methods:{
           // 数据请求方法
           getdata(){
@@ -100,6 +116,14 @@
             })
           },
 
+        // 通过loginname 请求数据获取当前登陆用户的积分
+        getUserinfo(name){
+          this.http.getLoginNames({name}).then(({data}) => {
+             this.userallData = data.data;
+             this.authorInfo.score = this.userallData.score;  // 同步用户的积分
+          })
+        },
+
         // 编程式导航
         clickHander(obj){
             this.$router.push({path:'index',query:{tab:obj.url}})
@@ -124,137 +148,158 @@
             this.$router.push({path:'/login'})
         }
       },
+      computed:{
+        isLogin(){
+          return this.$route.meta.login;
+        }
+      },
+
       created(){
+          // 判断是否登陆
+        let name = Cookies.get('name');
+        if(name){
+          name = JSON.parse(name);
+
+          if(name.loginname){
+            this.$route.meta.login = true;
+            this.authorInfo = name;
+            this.getUserinfo(name.loginname)
+          }else{
+            this.$route.meta.login = false;
+          }
+        }
+
         this.getdata();
       },
       watch:{
           $route:function (newRouter) {
             this.getdata();
           }
-      }
+      },
     }
 </script>
 
-<style scoped>
-  .index {
-    background: #e1e1e1;
-    padding: 20px 0;
-  }
-  .section {
-    max-width: 1400px;
-    margin: 0 auto;
-    background: #e1e1e1;
-    position: relative;
-  }
-  .content-left {
-    margin-right: 300px;
-    background: #ffffff;
-  }
-  .content-right {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 290px;
-    background: #ffffff;
-    border-radius: 4px;
-  }
+<style lang="less">
+  @import "../../assets/less/index/index";
+  /*.index {*/
+    /*background: #e1e1e1;*/
+    /*padding: 20px 0;*/
+  /*}*/
+  /*.section {*/
+    /*max-width: 1400px;*/
+    /*margin: 0 auto;*/
+    /*background: #e1e1e1;*/
+    /*position: relative;*/
+  /*}*/
+  /*.content-left {*/
+    /*margin-right: 300px;*/
+    /*background: #ffffff;*/
+  /*}*/
+  /*.content-right {*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*top: 0;*/
+    /*width: 290px;*/
+    /*background: #ffffff;*/
+    /*border-radius: 4px;*/
+  /*}*/
 
-  .header-nav {
-    height: 40px;
-    line-height: 40px;
-    padding: 0 8px;
-    cursor: pointer;
-    background: #f6f6f6;
-  }
-  .header-nav>span {
-    padding: 6px 4px;
-    color: #80bd01;
-    margin: 0 12px;
-    font-size: 12px;
-    border-radius: 4px;
-    text-align: center;
-  }
-  .header-nav>span:hover {
-    color: #555555;
-  }
-  .header-nav>span.active {
-    background: #80bd01;
-    color: #ffffff;
-  }
+  /*.header-nav {*/
+    /*height: 40px;*/
+    /*line-height: 40px;*/
+    /*padding: 0 8px;*/
+    /*cursor: pointer;*/
+    /*background: #f6f6f6;*/
+  /*}*/
+  /*.header-nav>span {*/
+    /*padding: 6px 4px;*/
+    /*color: #80bd01;*/
+    /*margin: 0 12px;*/
+    /*font-size: 12px;*/
+    /*border-radius: 4px;*/
+    /*text-align: center;*/
+  /*}*/
+  /*.header-nav>span:hover {*/
+    /*color: #555555;*/
+  /*}*/
+  /*.header-nav>span.active {*/
+    /*background: #80bd01;*/
+    /*color: #ffffff;*/
+  /*}*/
 
-  .content-warpper>li {
-    height: 50px;
-    line-height: 50px;
-    padding: 0 10px;
-    border-bottom: solid 1px #f0f0f0;
-    cursor: pointer;
-    font-size: 15px;
-  }
-  .content-warpper>li:last-child {
-    border-bottom: none;
-  }
+  /*.content-warpper>li {*/
+    /*height: 50px;*/
+    /*line-height: 50px;*/
+    /*padding: 0 10px;*/
+    /*border-bottom: solid 1px #f0f0f0;*/
+    /*cursor: pointer;*/
+    /*font-size: 15px;*/
+  /*}*/
+  /*.content-warpper>li:last-child {*/
+    /*border-bottom: none;*/
+  /*}*/
 
-  .content-warpper>li:hover {
-    background: #f5f5f5;
-  }
+  /*.content-warpper>li:hover {*/
+    /*background: #f5f5f5;*/
+  /*}*/
 
-  .user-image {
-    width: 30px;
-    height: 30px;
-    border-radius: 4px;
-    vertical-align: middle;
-  }
+  /*.user-image {*/
+    /*width: 30px;*/
+    /*height: 30px;*/
+    /*border-radius: 4px;*/
+    /*vertical-align: middle;*/
+  /*}*/
 
-  .content-warpper .number {
-    color: #b4b4b4;
-    margin: 0 4px 0 8px;
-    cursor: auto;
-  }
-  .content-warpper .number>i {
-    font-style: normal;
-    color: #000;
-  }
-  .content-warpper .topics {
-    padding: 4px;
-    background: #e5e5e5;
-    border-radius: 4px;
-    text-align: center;
-    color: #999999;
-    font-size: 12px;
-    margin-right: 13px;
-    cursor: auto;
-  }
+  /*.content-warpper .number {*/
+    /*color: #b4b4b4;*/
+    /*margin: 0 4px 0 8px;*/
+    /*cursor: auto;*/
+  /*}*/
+  /*.content-warpper .number>i {*/
+    /*font-style: normal;*/
+    /*color: #000;*/
+  /*}*/
+  /*.content-warpper .topics {*/
+    /*padding: 4px;*/
+    /*background: #e5e5e5;*/
+    /*border-radius: 4px;*/
+    /*text-align: center;*/
+    /*color: #999999;*/
+    /*font-size: 12px;*/
+    /*margin-right: 13px;*/
+    /*cursor: auto;*/
+  /*}*/
 
-  .content-title {
-    color: #333333;
-  }
-  .content-title:hover {
-    text-decoration: underline;
-  }
+  /*.content-title {*/
+    /*color: #333333;*/
+  /*}*/
+  /*.content-title:hover {*/
+    /*text-decoration: underline;*/
+  /*}*/
 
-  .content-time {
-    float: right;
-    font-size: 12px;
-  }
-  .pages {
-    padding: 10px;
-  }
+  /*.content-time {*/
+    /*float: right;*/
+    /*font-size: 12px;*/
+  /*}*/
+  /*.pages {*/
+    /*padding: 10px;*/
+  /*}*/
 
-  /*右侧*/
-  .header-content {
-    height: 116px;
-    padding: 18px 10px 10px;
-    font-size: 11px;
-  }
-  .header-content .login {
-    display: inline-block;
-    padding: 11px 9px;
-    text-align: center;
-    color: #ffffff;
-    font-size: 12px;
-    background: #5bc0de;
-    margin-top: 14px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
+  /*!*右侧*!*/
+  /*.header-content {*/
+    /*height: 116px;*/
+    /*padding: 18px 10px 10px;*/
+    /*font-size: 11px;*/
+  /*}*/
+  /*.header-content .login {*/
+    /*display: inline-block;*/
+    /*padding: 11px 9px;*/
+    /*text-align: center;*/
+    /*color: #ffffff;*/
+    /*font-size: 12px;*/
+    /*background: #5bc0de;*/
+    /*margin-top: 14px;*/
+    /*border-radius: 6px;*/
+    /*cursor: pointer;*/
+  /*}*/
 </style>

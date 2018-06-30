@@ -8,10 +8,11 @@
       <div class="left-warp">
         <p class="access">
           <span>Access Token账号</span>
-          <input type="text">
+          <input type="text" v-model.trim="AccessToken">
+          <Alert type="error" :closable="true" :show-icon="true" v-if="showError" @on-close="closeHander(false)">{{message}}</Alert >
         </p>
         <div class="bot">
-          <span class="it-login">登陆</span>
+          <span class="it-login" @click="accessLogin">登陆</span>
           <a href="#" class="target">忘记账号了?</a>
         </div>
       </div>
@@ -38,9 +39,56 @@
 </template>
 
 <script>
+
+  import {Alert } from 'iview'
+  import Cookies from 'js-cookie'
+
     export default {
         name: "login",
-        
+        data(){
+          return {
+            AccessToken:"",
+            showError:false,
+            message:"",
+          }
+        },
+      components:{
+        Alert,
+      },
+      methods:{
+          // 登陆access ToKen
+        accessLogin(){
+          if(!this.AccessToken){
+            this.message = "请输入AccessToken账号";
+            this.showError = true;
+            setTimeout(() => {
+              this.closeHander();
+            },5000);
+            return
+          }
+
+          // 已经输入账号,确保不为空
+          this.http.getUserInfo({accesstoken:this.AccessToken}).then(({data}) => {
+
+            Cookies.set('name', data, { expires: 7 });
+            this.$router.push({path:'/index', query:{tab:'all'}})
+
+          })
+          .catch(err => {
+            this.message = "AccessToken账号输入有误,请重新输入";
+            this.showError = true;
+            setTimeout(() => {
+              this.closeHander();
+            },5000);
+          })
+
+        },
+
+        closeHander(e){
+          this.showError = e;
+        }
+      },
+
     }
 </script>
 
@@ -139,5 +187,11 @@
     line-height: 40px;
     font-size: 16px;
     padding-left: 12px;
+  }
+
+  .ivu-alert {
+    display: inline;
+    margin-left: 10px;
+    font-size: 10px;
   }
 </style>

@@ -97,28 +97,28 @@
   background: #ffffff;
   border-radius: 4px;
 }
-.details-content .section-right .r-title {
+.details-content .section-right .authorInfoss .r-title {
   height: 40px;
   line-height: 40px;
   padding-left: 9px;
   background: #f6f6f6;
   color: #444444;
 }
-.details-content .section-right .user_card {
+.details-content .section-right .authorInfoss .user_card {
   padding: 10px;
 }
-.details-content .section-right .user_card .user-image {
+.details-content .section-right .authorInfoss .user_card .user-image {
   line-height: 26px;
 }
-.details-content .section-right .user_card .user-image img {
+.details-content .section-right .authorInfoss .user_card .user-image img {
   width: 48px;
   height: 48px;
 }
-.details-content .section-right .user_card .user-image span {
+.details-content .section-right .authorInfoss .user_card .user-image span {
   margin-left: 11px;
   color: #7780a6;
 }
-.details-content .section-right .user_card .user-image .big {
+.details-content .section-right .authorInfoss .user_card .user-image .big {
   color: #000;
   margin-top: 10px;
 }

@@ -17,6 +17,9 @@ let router = new VueRouter({
     {
       path:'/index',
       component:Index,
+      meta:{
+        login:false,
+      }
     },
     {
       path:'/about',

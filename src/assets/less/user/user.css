@@ -112,28 +112,28 @@
   border-radius: 4px;
   z-index: 1000;
 }
-.user-content .section .user-right .r-title {
+.user-content .section .user-right .authorInfoss .r-title {
   height: 40px;
   line-height: 40px;
   padding-left: 9px;
   background: #f6f6f6;
   color: #444444;
 }
-.user-content .section .user-right .user_card {
+.user-content .section .user-right .authorInfoss .user_card {
   padding: 10px;
 }
-.user-content .section .user-right .user_card .user-image {
+.user-content .section .user-right .authorInfoss .user_card .user-image {
   line-height: 26px;
 }
-.user-content .section .user-right .user_card .user-image img {
+.user-content .section .user-right .authorInfoss .user_card .user-image img {
   width: 48px;
   height: 48px;
 }
-.user-content .section .user-right .user_card .user-image span {
+.user-content .section .user-right .authorInfoss .user_card .user-image span {
   margin-left: 11px;
   color: #7780a6;
 }
-.user-content .section .user-right .user_card .user-image .big {
+.user-content .section .user-right .authorInfoss .user_card .user-image .big {
   color: #000;
   margin-top: 10px;
 }

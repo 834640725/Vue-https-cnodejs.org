@@ -52,12 +52,30 @@ export function getLoginNames(params){
   return respons(`/user/${params.name}`)
 }
 
+/**
+ * post /accesstoken 验证 accessToken 的正确性
+ * 返回值示例
+ {success: true, loginname: req.user.loginname, id: req.user.id, avatar_url: req.user.avatar_url}
+ */
+
+export function getUserInfo(params){
+   return respons({
+     method:"post",
+     url:'/accesstoken',
+     data:{
+       accesstoken:params.accesstoken,
+     }
+   })
+}
+
+
 export default {
   install(Vue){
     Vue.prototype.http = {
       getList,
       getTopicId,
       getLoginNames,
+      getUserInfo,
     }
   }
 }
