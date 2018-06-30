@@ -20,20 +20,21 @@
         <!--创建的话题列表-->
         <div class="create-gambit">
           <div class="bit-header">最近创建的话题</div>
-          <ul class="list">
+          <ul class="list" v-if="topicslength">
             <li v-for="item in userSuccess.recent_topics">
               <img :src="userSuccess.avatar_url" alt="" class="img">
               <span>12/97</span>
               <a href="#" @click.prevent="clickDetails(item)">{{item.title}}</a>
             </li>
           </ul>
+          <p class="subject" v-if="!topicslength">太鸡儿懒了...无话题</p>
         </div>
 
         <!--参与的话题-->
         <div class="create-gambit joinSubject">
           <div class="bit-header">最近参与的话题</div>
           <!--<div class="bit-header">{{hasRecent}}</div>-->
-          <ul class="list" v-if="length">
+          <ul class="list" v-if="replieslength">
             <li v-for="item in userSuccess.recent_replies">
               <img
                 :src="item.author['avatar_url']" alt="" class="img"
@@ -44,7 +45,7 @@
               <a href="#" @click.prevent="clickDetails(item)">{{item.title}}</a>
             </li>
           </ul>
-          <p class="subject" v-if="!length">无话题</p>
+          <p class="subject" v-if="!replieslength">无话题</p>
         </div>
 
       </div>
@@ -68,7 +69,8 @@
         data(){
           return {
             userSuccess:{},   //用户信息
-            length:'',
+            replieslength:'',  //参与的话题
+            topicslength:'', //创建的话题
           }
         },
 
@@ -98,7 +100,8 @@
               return this.userSuccess;
 
             }).then((data) => {
-              this.length = data.recent_replies.length;
+              this.topicslength = data.recent_topics.length;
+              this.replieslength = data.recent_replies.length;
             })
         }
       },

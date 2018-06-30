@@ -26,7 +26,7 @@
       methods:{
           // 预想在details组件中 点击用户头像 查看用户的详细信息
         clickDetails(){
-           let {loginname} = this.AuthorInfo;
+           let {loginname} = this.authorInfo;
            this.$router.push({path:`/user/${loginname}`})
         }
       },

@@ -89,6 +89,12 @@
 .user-content .section .user-left .create-gambit .list li > span {
   margin: 0 10px;
 }
+.user-content .section .user-left .create-gambit .subject {
+  height: 58px;
+  line-height: 58px;
+  color: #333333;
+  padding-left: 12px;
+}
 .user-content .section .user-left .joinSubject .subject {
   height: 58px;
   line-height: 58px;

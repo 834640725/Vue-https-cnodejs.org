@@ -46,7 +46,7 @@
         <div class="content-right">
           <header class="header-content">
             <p>CNode: Node.js专业中文社区</p>
-            <p class="login">通过 Access Token 登陆</p>
+            <p class="login" @click="clickLogins">通过 Access Token 登陆</p>
           </header>
         </div>
       </section>
@@ -117,6 +117,11 @@
         clickDetails(obj){
            let {id,tab} = obj;
            this.$router.push({path:`topic/${id}`})
+        },
+
+        // 进入登陆
+        clickLogins(){
+            this.$router.push({path:'/login'})
         }
       },
       created(){

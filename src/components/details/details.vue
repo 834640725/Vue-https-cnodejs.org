@@ -79,7 +79,7 @@
       },
       methods:{
         clickUser(obj){
-          let userLoginname = obj.author['loginname'] || this.userInfo.author['loginname'];
+          let userLoginname = obj.author['loginname'];
           this.$router.push({path:`/user/${userLoginname}`})
         }
       },
