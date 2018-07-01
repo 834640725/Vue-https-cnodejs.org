@@ -18,7 +18,7 @@ let store = new Vuex.Store({
     // 当前登陆用户信息
     savaYouSelf(state,data){
       state.youSelf = data;
-      console.log(state.youSelf,111111111111)
+      console.log(state.youSelf,11111111111)
     }
   },
   actions:{

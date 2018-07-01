@@ -119,9 +119,9 @@
             this.http.getFabulous(params).then(({data}) => {
                 if(data.action === 'up'){
                   // 点赞
-                  obj.ups.push(obj.id)
+                  obj.ups.push(youSelf.id)
                 }else{
-                  obj.ups = obj.ups.filter(item => item !== obj.id);
+                  obj.ups = obj.ups.filter(item => item !== youSelf.id)
                 }
             })
 
