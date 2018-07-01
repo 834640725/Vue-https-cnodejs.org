@@ -15,6 +15,11 @@
                 <span>● {{userInfo.visit_count}} 次浏览</span>
                 <span>● 来自 {{userInfo.tab}}</span>
               </div>
+              <span
+                v-if="userInfo.title && this.$store.state.userLogin"
+                :class="[userInfo['is_collect'] ? 'cancel_collect' : '','is_collect']"
+                @click="clickCollect"
+              ></span>
             </header>
 
             <div class="article">
@@ -128,6 +133,34 @@
           }else{
             this.$router.push({path:'/login'})
           }
+        },
+
+        /**
+         * // 收藏 和 取消收藏
+         * userInfo.is_collect  true or false
+         */
+        clickCollect(){
+
+          let {id} = this.userInfo;
+          let accesstoken = this.$store.state.usersaveAccess;
+          let params = {
+            accesstoken,
+            id,
+          };
+
+          if(this.userInfo['is_collect']){
+            params.collect = 'de_collect ';  //动态拼接取消收藏
+            this.http.getCollect(params).then(({data}) => {
+              this.userInfo['is_collect'] = false;
+            })
+
+          }else{
+            params.collect = 'collect';  //动态拼接收藏
+            this.http.getCollect(params).then(({data}) => {
+              this.userInfo['is_collect'] = true;
+            })
+          }
+
         }
       },
       components:{

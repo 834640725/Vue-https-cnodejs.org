@@ -88,6 +88,24 @@ export function getFabulous(params){
 }
 
 
+/**
+ * 收藏主题和取消收藏主题
+ * post /topic_collect/collect 收藏主题
+ * post /topic_collect/de_collect 取消主题
+ */
+// 收藏主题
+export function getCollect(params){
+  return respons({
+    method:"post",
+    url:`/topic_collect/${params.collect}`,
+    data:{
+      accesstoken:params.accesstoken,
+      topic_id :params.id,
+    }
+  })
+}
+
+
 export default {
   install(Vue){
     Vue.prototype.http = {
@@ -95,7 +113,8 @@ export default {
       getTopicId,
       getLoginNames,
       getUserInfo,
-      getFabulous
+      getFabulous,
+      getCollect,
     }
   }
 }

@@ -18,6 +18,8 @@
       height: 87px;
       border-bottom: solid 1px #e5e5e5;
       padding-top: 12px;
+      position: relative;
+      padding-bottom: 20px;
 
       .det-tab,.det-title {
         line-height: 41px;
@@ -35,6 +37,47 @@
       .det-title {
         font-weight: 700;
         font-size: 22px;
+      }
+
+      //收藏主题
+      .is_collect {
+        padding: 7px 13px;
+        text-align: center;
+        color: #f7ffff;
+        font-size: 12px;
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        background: #80bd01;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &::before {
+          content: "收藏";
+          display: inline-block;
+          clear: both;
+        }
+        &:hover {
+          background: #68a601;
+        }
+
+        &.cancel_collect {
+          background: #e5e5e5;
+          color: #000000;
+          transition: 0.5s;
+
+          &::before {
+            content: "取消收藏";
+            display: inline-block;
+            clear: both;
+          }
+
+          &:hover {
+            background: rgb(144,144,144);
+            color: #ffffff;
+          }
+        }
+
       }
     }
 

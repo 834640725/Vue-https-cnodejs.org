@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-cloak>
       <header class="header">
         <div class="header-content">
           <img src="./assets/images/cnodejs_light.svg" alt="" class="header-logo" @click="clickHander">
@@ -91,6 +91,11 @@ export default {
 </script>
 
 <style scoped>
+
+  [v-cloak] {
+    display: none;
+  }
+
   .header {
     height: 50px;
     background: #444444;
