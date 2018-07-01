@@ -43,11 +43,30 @@
                     </span>
                     <span><a href="#">回复</a></span>
                   </div>
-
-                  <!--接下来该写markdown文本编辑器和登陆-->
-
                 </li>
               </ul>
+              <div class="reply" v-if="this.$store.state.userLogin">
+
+                <header class="reply-header">
+                  添加回复
+                  <span class="clickbtn" @click="clickReply">回复</span>
+                </header>
+                <mavon-editor
+                  codeStyle="arta"
+                  v-model="value"
+                  fontSize="14"
+                  :boxShadow="false"
+                  defaultOpen="edit"
+                  placeholder="想回复点啥..."
+                  :toolbarsFlag="true"
+                  :toolbars="toolbars"
+                  :scrollStyle="true"
+                >
+                </mavon-editor>
+
+              </div>
+
+
             </div>
           </div>
 
@@ -75,15 +94,28 @@
 
   import {getDateTimes} from '@/assets/js/getDateTimes'
   import {tabchange} from '@/assets/js/tab'
-  import Cookies from 'js-cookie'
 
   import Userinfo from '@/iview/authorInfo/authorInfo'
+
 
     export default {
       data(){
         return{
           userInfo:{},   // 评论数据 replies
           authorInfo:{},  //作者信息
+          value:"",
+          toolbars:{
+            italic: true, // 斜体
+            superscript: true, // 上角标
+            link: true, // 链接
+            imagelink: true, // 图片链接
+            readmodel: true, // 沉浸式阅读
+            trash: true, // 清空
+            preview: true, // 预览
+            header: true, // 标题
+            fullscreen: true, // 全屏编辑
+            bold: true, // 粗体
+          },
         }
       },
       methods:{
@@ -161,6 +193,45 @@
             })
           }
 
+        },
+
+        /**
+         *  点击回复,回复成功需要重新请求当前主题数据列表。 - 封装通用
+         */
+        clickReply(){
+           if(!this.value.trim()) return;
+
+           // 发送回复 post 请求
+
+           let values = this.value;
+           let accesstoken = this.$store.state.usersaveAccess;
+           let id = this.userInfo.id;
+           let params = {
+             content:values,
+             accesstoken,
+             id,
+           };
+
+           this.http.setReplies(params).then(({data}) => {
+
+             // 评论成功之后,重新请求当前主题数据
+               let id = this.$route.params.id;
+               let params = {
+                 id,
+                 mk:true,
+                 accesstoken:this.$store.state.usersaveAccess,
+               };
+               if(id) {
+                 this.http.getTopicId(params).then(({data}) => {
+                   getDateTimes(data, 'create_at');
+                   tabchange(data);
+                   this.userInfo = data.data;
+                   this.value = '';
+                 })
+               }
+
+
+           })
         }
       },
       components:{
@@ -192,12 +263,45 @@
               })
            })
          }else{
-           this.$router.push({path:'/index'})
+            this.$router.push({path:'/index'})
          }
+
+
       }
     }
 </script>
 
 <style lang="less">
   @import "../../assets/less/details";
+  .reply {
+    margin-top: 13px;
+    width: 100%;
+  }
+  .reply-header {
+    height: 40px;
+    line-height: 40px;
+    background: #f6f6f6;
+    padding-left: 10px;
+    color: #444444;
+    font-size: 12px;
+    position: relative;
+  }
+  .clickbtn {
+    width: 50px;
+    height: 28px;
+    text-align: center;
+    line-height: 28px;
+    background: #0088cc;
+    color: #fff;
+    position: absolute;
+    right: 10px;
+    top: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .v-note-edit{
+    height: 250px;
+    overflow-y: auto;
+    padding-bottom: 60px;
+  }
 </style>

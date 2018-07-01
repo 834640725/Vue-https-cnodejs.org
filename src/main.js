@@ -13,6 +13,10 @@ import store from '@/store'
 
 import 'iview/dist/styles/iview.css';
 
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor);
+
 
 Vue.config.productionTip = false;
 
@@ -22,5 +26,5 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
-})
+  template: '<App/>',
+});

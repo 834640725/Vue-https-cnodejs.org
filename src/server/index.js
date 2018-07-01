@@ -105,6 +105,25 @@ export function getCollect(params){
   })
 }
 
+/**
+ * replies 点击回复(评论)
+ * post /topic/:topic_id/replies 新建评论
+ * accesstoken String 用户的 accessToken
+   content String 评论的主体
+   @ params {id,accesstoken,content}
+ */
+
+  export function setReplies(params){
+    return respons({
+      method:"post",
+      url:`/topic/${params.id}/replies`,
+      data:{
+        accesstoken:params.accesstoken,
+        content:params.content
+      }
+    })
+}
+
 
 export default {
   install(Vue){
@@ -115,6 +134,7 @@ export default {
       getUserInfo,
       getFabulous,
       getCollect,
+      setReplies
     }
   }
 }
