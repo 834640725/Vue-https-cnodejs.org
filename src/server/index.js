@@ -111,6 +111,12 @@ export function getCollect(params){
  * accesstoken String 用户的 accessToken
    content String 评论的主体
    @ params {id,accesstoken,content}
+
+   对另外一条评论的回复
+   @id : 当前数据主题 topic/ (id)
+   @reply_id 当前评论列表每一个对象的 "id"
+   @content : 评论的主题内容
+   @accesstoken 当前登陆用户的 accesstoken账号
  */
 
   export function setReplies(params){
@@ -119,7 +125,8 @@ export function getCollect(params){
       url:`/topic/${params.id}/replies`,
       data:{
         accesstoken:params.accesstoken,
-        content:params.content
+        content:params.content,
+        reply_id:params.reply_id,
       }
     })
 }

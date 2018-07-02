@@ -41,8 +41,26 @@
                       <a href="#" @click.prevent="clickFabulous(item)" v-if="item.is_uped">取消</a>
                       <i>{{item.ups.length}}</i>
                     </span>
-                    <span><a href="#">回复</a></span>
+                    <span><a href="#" @click.prevent="toClickReply(item)">回复</a></span>
                   </div>
+
+                  <mavon-editor
+                    v-if="userNameReply === item.id"
+                    codeStyle="arta"
+                    v-model="userreply"
+                    fontSize="14"
+                    :boxShadow="false"
+                    defaultOpen="edit"
+                    :toolbarsFlag="true"
+                    :toolbars="toolbars"
+                    :scrollStyle="true"
+                    style="border: none;border-top: #778087; margin-top: 6px;"
+                    ref="refValue"
+                  >
+                  </mavon-editor>
+                  <span class="is_rely" v-if="userNameReply === item.id" @click="ISREPLY_NOW(item)">回复</span>
+
+
                 </li>
               </ul>
               <div class="reply" v-if="this.$store.state.userLogin">
@@ -51,18 +69,20 @@
                   添加回复
                   <span class="clickbtn" @click="clickReply">回复</span>
                 </header>
-                <mavon-editor
-                  codeStyle="arta"
-                  v-model="value"
-                  fontSize="14"
-                  :boxShadow="false"
-                  defaultOpen="edit"
-                  placeholder="想回复点啥..."
-                  :toolbarsFlag="true"
-                  :toolbars="toolbars"
-                  :scrollStyle="true"
-                >
-                </mavon-editor>
+                <div>
+                    <mavon-editor
+                      codeStyle="arta"
+                      v-model="value"
+                      fontSize="14"
+                      :boxShadow="false"
+                      defaultOpen="edit"
+                      placeholder="想回复点啥..."
+                      :toolbarsFlag="true"
+                      :toolbars="toolbars"
+                      :scrollStyle="true"
+                    >
+                    </mavon-editor>
+                </div>
 
               </div>
 
@@ -116,6 +136,9 @@
             fullscreen: true, // 全屏编辑
             bold: true, // 粗体
           },
+
+          userreply:"",  // 评论列表中的回复 默认值 @username
+          userNameReply:"",
         }
       },
       methods:{
@@ -215,23 +238,76 @@
            this.http.setReplies(params).then(({data}) => {
 
              // 评论成功之后,重新请求当前主题数据
-               let id = this.$route.params.id;
-               let params = {
-                 id,
-                 mk:true,
-                 accesstoken:this.$store.state.usersaveAccess,
-               };
-               if(id) {
-                 this.http.getTopicId(params).then(({data}) => {
-                   getDateTimes(data, 'create_at');
-                   tabchange(data);
-                   this.userInfo = data.data;
-                   this.value = '';
-                 })
-               }
-
+             this.axiosReList();
+             this.value = "";
 
            })
+        },
+
+        // 回复时间格式转换
+        changeTimes(){
+            // 转换this.userInfo.replies 评论数组的时间格式
+            let {replies} = this.userInfo;
+            let obj = {
+              data:replies,
+            };
+            getDateTimes(obj,'create_at');
+            this.userInfo.replies = obj.data;
+        },
+
+        // 回复@用户的评论
+        toClickReply(obj){
+           this.userNameReply = obj.id;
+           this.userreply = '@' + obj.author['loginname'];
+        },
+
+        // ISREPLY_NOW 确认回复
+        ISREPLY_NOW(obj){
+
+          if(!this.userreply.trim()){
+            return;
+          }
+
+            let id = this.userInfo.id;
+            let reply_id = obj.id;
+            let accesstoken = this.$store.state.usersaveAccess;
+            let content = this.userreply;
+            let params = {
+              id,
+              accesstoken,
+              content,
+              reply_id,
+            };
+
+            this.http.setReplies(params).then(({data}) => {
+               if(data.success){
+                 this.axiosReList();
+                 this.userreply = "";
+                 this.userNameReply = "";
+               }
+            })
+
+        },
+
+        // 评论成功之后,载入新数据
+        axiosReList(){
+            //回复成功,载入新数据
+            let id = this.$route.params.id;
+            let params = {
+              id,
+              mk:true,
+              accesstoken:this.$store.state.usersaveAccess,
+            };
+            if(id) {
+              this.http.getTopicId(params).then(({data}) => {
+                getDateTimes(data, 'create_at');
+                tabchange(data);
+                this.userInfo = data.data;
+
+                // 回复之后请求新的评论数据列表,进行的时间格式转换
+                this.changeTimes();
+              })
+            }
         }
       },
       components:{
@@ -255,14 +331,8 @@
               tabchange(data);
               this.userInfo = data.data;
 
-              // 转换this.userInfo.replies 评论数组的时间格式
-              let {replies} = this.userInfo;
-              let obj = {
-                data:replies,
-              };
-              getDateTimes(obj,'create_at');
-              this.userInfo.replies = obj.data;
-
+              this.changeTimes();
+              console.log(this.userInfo);
 
               return this.userInfo.author['loginname']
             })
