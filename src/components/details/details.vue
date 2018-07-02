@@ -32,7 +32,7 @@
                 <li v-for="(item,index) in userInfo.replies">
                    <div @click="clickUser(item)">
                      <img :src="item.author['avatar_url']" alt="" class="rep-image">
-                     <strong>{{item.author['loginname']}} <a href="#" @click.prevent>{{index+1}}楼● 2 天前 </a></strong>
+                     <strong>{{item.author['loginname']}} <a href="#" @click.prevent>{{index+1}}楼● {{item.create_at}} </a></strong>
                    </div>
                    <div class="mkdown-text" v-html="item.content"></div>
                   <div class="asslogin">
@@ -254,7 +254,16 @@
               getDateTimes(data,'create_at');
               tabchange(data);
               this.userInfo = data.data;
-              console.log(this.userInfo);
+
+              // 转换this.userInfo.replies 评论数组的时间格式
+              let {replies} = this.userInfo;
+              let obj = {
+                data:replies,
+              };
+              getDateTimes(obj,'create_at');
+              this.userInfo.replies = obj.data;
+
+
               return this.userInfo.author['loginname']
             })
            .then((loginname) => {
