@@ -45,14 +45,18 @@
           <Page :total="6000" class="pages" :page-size="20" :current="page" @on-change="changePages"></Page>
         </div>
         <div class="content-right">
-          <header class="header-content" v-if="!isLogin">
-            <p>CNode: Node.js专业中文社区</p>
-            <p class="login" @click="clickLogins">通过 Access Token 登陆</p>
-          </header>
+          <div class="right-header">
+            <header class="header-content" v-if="!isLogin">
+              <p>CNode: Node.js专业中文社区</p>
+              <p class="login" @click="clickLogins">通过 Access Token 登陆</p>
+            </header>
 
-          <authorComponent :authorInfo="authorInfo" v-if="isLogin">
-            <div class="r-title">个人信息</div>
-          </authorComponent>
+            <authorComponent :authorInfo="authorInfo" v-if="isLogin">
+              <div class="r-title">个人信息</div>
+            </authorComponent>
+          </div>
+
+          <myrelease @onPublish="clickPublish"></myrelease>
 
         </div>
       </section>
@@ -66,6 +70,7 @@
     import indexnavList from '@/assets/js/index-navlist'  //导航列表
 
     import authorComponent from '@/iview/authorInfo/authorInfo'
+    import myrelease from '@/iview/release/release'
 
     import { Page } from 'iview'
     import Cookies from 'js-cookie'
@@ -89,6 +94,7 @@
       components:{
         Page,
         authorComponent,
+        myrelease,
       },
 
       methods:{
@@ -121,6 +127,10 @@
           this.http.getLoginNames({name}).then(({data}) => {
              this.userallData = data.data;
              this.authorInfo.score = this.userallData.score;  // 同步用户的积分
+             // 第一次请求将积分同步到vuex中
+             this.$store.commit('savaScore',{
+               score:this.userallData.score,
+             })
           })
         },
 
@@ -152,6 +162,11 @@
         goUserClick(obj){
            let loginname = obj.author['loginname'];
            this.$router.push({path:`/user/${loginname}`})
+        },
+
+        // 发布话题
+        clickPublish(){
+            console.log('发布话题')
         }
       },
       computed:{
@@ -169,7 +184,15 @@
           if(name.loginname){
             this.$route.meta.login = true;
             this.authorInfo = name;
-            this.getUserinfo(name.loginname)  //用户积分
+
+            let usetScore = this.$store.state.usetScore;
+            if(!usetScore){
+              this.getUserinfo(name.loginname)  //当前登陆用户积分
+            }else{
+              this.authorInfo.score = usetScore;
+            }
+
+
           }else{
             this.$route.meta.login = false;
           }

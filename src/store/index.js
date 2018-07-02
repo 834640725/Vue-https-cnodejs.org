@@ -8,6 +8,7 @@ let store = new Vuex.Store({
      userLogin:false,
      usersaveAccess:"",
      youSelf:{},   //登陆用户的信息
+     usetScore:"", //登陆用户积分
   },
   mutations:{
     loginSuccess(state,params){
@@ -19,6 +20,11 @@ let store = new Vuex.Store({
     savaYouSelf(state,data){
       state.youSelf = data;
       console.log(state.youSelf,11111111111)
+    },
+
+    //用户积分
+    savaScore(state,params){
+       state.usetScore = params.score;
     }
   },
   actions:{
