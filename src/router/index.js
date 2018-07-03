@@ -10,6 +10,7 @@ import Login from '@/components/login/login'
 
 import Details from '@/components/details/details'
 import UserInfo from '@/components/details/user/user'
+import Create from '@/components/create/create'
 
 let router = new VueRouter({
   mode:'history',
@@ -36,6 +37,10 @@ let router = new VueRouter({
     {
       path:'/user/:name',
       component:UserInfo,
+    },
+    {
+      path:'/create',
+      component:Create,
     },
     {
       path:'*',
