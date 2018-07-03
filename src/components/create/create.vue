@@ -8,9 +8,9 @@
           <div class="l-warpper">
             <div class="select-plate">
                 <span>选择板块：</span>
-                <Select v-model="value" style="width:218px; height: 28px; padding-left: 10px; border-radius: 4px; border-color: #cccccc;">
-                  <Option v-for="item in plateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
+                <select v-model="value" class="select">
+                  <option v-for="item in plateList" :key="Math.random()" :value="item.value">{{item.label}}</option>
+                </select>
             </div>
             <div class="create-title">
               <Input placeholder="标题字数10字以上" v-model="title" :clearable="true"></Input>
@@ -29,7 +29,7 @@
                   style="height: 500px;"
                 >
                 </mavon-editor>
-              <div class="createClick">提交</div>
+              <div class="createClick" @click="clickHander">提交</div>
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
             value:"",
             title:"",
             contentText:"",
-            plateList: [
+            plateList:[
               {
                 value:"",
                 label:"请选择"
@@ -92,12 +92,46 @@
               header: true, // 标题
               fullscreen: true, // 全屏编辑
               bold: true, // 粗体
-            },
+            }
           }
         },
       components:{
         Select,
         Input
+      },
+      methods:{
+        clickHander(){
+          let tab = this.value,
+              title = this.title,
+              content = this.contentText;
+          let accesstoken = this.$store.state.usersaveAccess;
+
+           if(!tab){
+             alert('选择创建的话题模块');
+             return;
+           }
+           if(title.trim().length < 10){
+             alert('标题长度不能小于10')
+             return;
+           }
+           if(!content.trim()){
+             alert('内容不能为空');
+             return;
+           }
+
+           let params = {
+             tab,
+             title,
+             content,
+             accesstoken
+           };
+
+           this.http.createpPlate(params).then(({data}) => {
+              let {topic_id} = data;
+              this.$router.push({path:`/topic/${topic_id}`})
+           })
+
+        }
       }
     }
 </script>
@@ -139,9 +173,6 @@
   .l-warpper {
     padding: 10px;
   }
-  .select-plate {
-
-  }
   .create-title {
     margin-top: 12px;
   }
@@ -180,5 +211,12 @@
   .r-list>li>a {
     color: #333333;
     text-decoration: underline;
+  }
+  .select {
+    width: 218px;
+    height: 28px;
+    padding-left: 10px;
+    border-radius: 4px;
+    border: solid 1px #cccccc;
   }
 </style>

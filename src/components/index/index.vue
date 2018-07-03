@@ -166,7 +166,7 @@
 
         // 发布话题
         clickPublish(){
-            console.log('发布话题')
+            this.$router.push({path:'/create'});
         }
       },
       computed:{

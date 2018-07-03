@@ -11,6 +11,7 @@ import Login from '@/components/login/login'
 import Details from '@/components/details/details'
 import UserInfo from '@/components/details/user/user'
 import Create from '@/components/create/create'
+import Ceshi from '@/components/index/ceshi'
 
 let router = new VueRouter({
   mode:'history',
@@ -41,6 +42,10 @@ let router = new VueRouter({
     {
       path:'/create',
       component:Create,
+    },
+    {
+      path:'/ceshi',
+      component:Ceshi,
     },
     {
       path:'*',

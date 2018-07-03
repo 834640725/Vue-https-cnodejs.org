@@ -131,6 +131,26 @@ export function getCollect(params){
     })
 }
 
+/**
+ * post /topics 新建主题
+ * @ accesstoken
+ * @ title 标题
+ * @ tab 分类
+ * @ content
+ */
+export function createpPlate(params) {
+   return respons({
+     method:"post",
+     url:'/topics',
+     data:{
+       accesstoken:params.accesstoken,
+       title:params.title,
+       tab:params.tab,
+       content:params.content
+     }
+   })
+}
+
 
 export default {
   install(Vue){
@@ -141,7 +161,8 @@ export default {
       getUserInfo,
       getFabulous,
       getCollect,
-      setReplies
+      setReplies,
+      createpPlate
     }
   }
 }
