@@ -3,7 +3,7 @@
       <section class="section">
         <div class="section-left">
           <header class="l-header">
-            <a href="#">首页</a> / 发布话题
+            <a href="#" @click.prevent="clickgoHome">首页</a> / 发布话题
           </header>
           <div class="l-warpper">
             <div class="select-plate">
@@ -158,6 +158,11 @@
           description = description.replace(/<\/?[^>]*>/g, "");
           description = description.replace(/\s*/g, "");
           return description;
+        },
+
+        // index
+        clickgoHome(){
+          this.$router.push({path:'/index'});
         }
 
         },

@@ -21,6 +21,7 @@ let router = new VueRouter({
       component:Index,
       meta:{
         login:false,
+        title:"CNode：Node.js专业中文社区"
       }
     },
     {
@@ -42,10 +43,6 @@ let router = new VueRouter({
     {
       path:'/create',
       component:Create,
-    },
-    {
-      path:'/ceshi',
-      component:Ceshi,
     },
     {
       path:'*',

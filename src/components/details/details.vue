@@ -359,8 +359,9 @@
               tabchange(data);
               this.userInfo = data.data;
 
+              document.title = this.userInfo.title;  //路由标题
+
               this.user_id = this.$store.state.youSelf.id;  //用户的id
-              console.log(this.userInfo)
 
               this.changeTimes();
               return this.userInfo.author['loginname']
@@ -370,11 +371,12 @@
                  this.authorInfo = data.data;
               })
            })
+            .catch((err) => {
+               
+            })
          }else{
             this.$router.push({path:'/index'})
          }
-
-
       }
     }
 </script>

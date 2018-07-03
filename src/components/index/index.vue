@@ -61,6 +61,7 @@
         </div>
       </section>
     </div>
+
 </template>
 
 <script>
@@ -205,6 +206,11 @@
             this.getdata();
           }
       },
+      beforeRouteEnter(to,from,next){
+         next((vm) => {
+           document.title = vm.$route.meta.title;
+         })
+      }
     }
 </script>
 

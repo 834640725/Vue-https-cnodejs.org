@@ -13,7 +13,7 @@
         </p>
         <div class="bot">
           <span class="it-login" @click="accessLogin">登陆</span>
-          <a href="#" class="target">忘记账号了?</a>
+          <a href="https://cnodejs.org/" class="target" target="_blank">忘记账号了?</a>
         </div>
       </div>
     </div>
