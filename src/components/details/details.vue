@@ -15,6 +15,11 @@
                 <span>● {{userInfo.visit_count}} 次浏览</span>
                 <span>● 来自 {{userInfo.tab}}</span>
               </div>
+              <div class="userEdit"
+                   title="编辑"
+                   v-if="userInfo.author_id === user_id"
+                   @click="editClick"
+              ></div>
               <span
                 v-if="userInfo.title && this.$store.state.userLogin"
                 :class="[userInfo['is_collect'] ? 'cancel_collect' : '','is_collect']"
@@ -117,6 +122,8 @@
 
   import Userinfo from '@/iview/authorInfo/authorInfo'
 
+  import {Icon} from 'iview'
+
 
     export default {
       data(){
@@ -139,6 +146,7 @@
 
           userreply:"",  // 评论列表中的回复 默认值 @username
           userNameReply:"",
+          user_id:"",  //当前登陆用户的id,用来判断进入的帖子是不是自己的,才可以进行编辑操作
         }
       },
       methods:{
@@ -308,10 +316,28 @@
                 this.changeTimes();
               })
             }
+        },
+
+        //用户编辑帖子
+        editClick(){
+            let {title,content,tab,id} = this.userInfo;
+            let accesstoken = this.$store.state.usersaveAccess;
+
+            this.$store.commit('saveEditHander',{
+              title,
+              content,
+              tab,
+              id,
+              accesstoken
+            });
+
+          this.$router.push({path:'/create'})
+
         }
       },
       components:{
         Userinfo,
+        Icon,
       },
 
       computed:{
@@ -332,6 +358,9 @@
               getDateTimes(data,'create_at');
               tabchange(data);
               this.userInfo = data.data;
+
+              this.user_id = this.$store.state.youSelf.id;  //用户的id
+              console.log(this.userInfo)
 
               this.changeTimes();
               return this.userInfo.author['loginname']
@@ -383,4 +412,5 @@
     overflow-y: auto;
     padding-bottom: 60px;
   }
+
 </style>

@@ -139,14 +139,34 @@ export function getCollect(params){
  * @ content
  */
 export function createpPlate(params) {
+  console.log(params)
    return respons({
      method:"post",
-     url:'/topics',
+     url:'/topics ',
      data:{
        accesstoken:params.accesstoken,
        title:params.title,
        tab:params.tab,
        content:params.content
+     }
+   })
+}
+
+/**
+ * 编辑主题
+ *  比新建主题多一个参数
+ *  @ topic_id String 主题id
+ */
+export function getUpdate(params){
+   return respons({
+     method:"post",
+     url:"/topics/update",
+     data:{
+       accesstoken :params.accesstoken,
+       title :params.title,
+       tab :params.tab,
+       content :params.content,
+       topic_id :params.topic_id
      }
    })
 }
@@ -162,7 +182,8 @@ export default {
       getFabulous,
       getCollect,
       setReplies,
-      createpPlate
+      createpPlate,
+      getUpdate
     }
   }
 }

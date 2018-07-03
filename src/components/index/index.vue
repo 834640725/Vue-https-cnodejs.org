@@ -56,7 +56,7 @@
             </authorComponent>
           </div>
 
-          <myrelease @onPublish="clickPublish"></myrelease>
+          <myrelease @onPublish="clickPublish" v-if="isLogin"></myrelease>
 
         </div>
       </section>

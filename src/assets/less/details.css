@@ -13,11 +13,10 @@
   background: #ffffff;
 }
 .details-content .section-left .header {
-  height: 87px;
   border-bottom: solid 1px #e5e5e5;
   padding-top: 12px;
   position: relative;
-  padding-bottom: 20px;
+  padding-bottom: 14px;
 }
 .details-content .section-left .header .det-tab,
 .details-content .section-left .header .det-title {
@@ -44,7 +43,7 @@
   font-size: 12px;
   position: absolute;
   right: 10px;
-  bottom: 10px;
+  bottom: 20px;
   background: #80bd01;
   border-radius: 4px;
   cursor: pointer;
@@ -70,6 +69,14 @@
 .details-content .section-left .header .is_collect.cancel_collect:hover {
   background: #909090;
   color: #ffffff;
+}
+.details-content .section-left .header .userEdit {
+  width: 20px;
+  height: 20px;
+  background-image: url("../images/edit.png");
+  background-size: 100% 100%;
+  margin-left: 10px;
+  cursor: pointer;
 }
 .details-content .section-left .header-info {
   padding: 0 10px;

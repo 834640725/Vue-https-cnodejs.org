@@ -19,6 +19,7 @@
                 <mavon-editor
                   codeStyle="arta"
                   v-model="contentText"
+                  :editable="true"
                   placeholder=" "
                   fontSize="16"
                   :boxShadow="false"
@@ -26,7 +27,7 @@
                   :toolbarsFlag="true"
                   :toolbars="toolbars"
                   :scrollStyle="true"
-                  style="height: 500px;"
+                   style="height: 500px;"
                 >
                 </mavon-editor>
               <div class="createClick" @click="clickHander">提交</div>
@@ -56,6 +57,7 @@
     export default {
         data(){
           return {
+            editContent:{},
             value:"",
             title:"",
             contentText:"",
@@ -105,13 +107,14 @@
               title = this.title,
               content = this.contentText;
           let accesstoken = this.$store.state.usersaveAccess;
+          let topic_id = this.editContent.id;
 
            if(!tab){
              alert('选择创建的话题模块');
              return;
            }
-           if(title.trim().length < 10){
-             alert('标题长度不能小于10')
+           if(title.trim().length < 4){
+             alert('标题长度不能小于4');
              return;
            }
            if(!content.trim()){
@@ -123,15 +126,51 @@
              tab,
              title,
              content,
-             accesstoken
+             accesstoken,
+             topic_id,
            };
 
-           this.http.createpPlate(params).then(({data}) => {
-              let {topic_id} = data;
-              this.$router.push({path:`/topic/${topic_id}`})
-           })
+          /**
+           * 如果 topic_id 为undefined,则为新建主题。否则为编辑主题内容
+           */
+          if(!topic_id){
+               this.http.createpPlate(params).then(({data}) => {
+                 let {topic_id} = data;
+                 this.$router.push({path:`/topic/${topic_id}`})
+               })
+           }
+           else{
+            this.http.getUpdate(params).then(({data}) => {
+                let {topic_id} = data;
+                this.$router.push({path:`/topic/${topic_id}`})
+            })
+          }
 
+        },
+        description(str){
+          if(typeof str !== 'string'){
+            return;
+          }
+          let description = str;
+          description = description.replace(/(\n)/g, "");
+          description = description.replace(/(\t)/g, "");
+          description = description.replace(/(\r)/g, "");
+          description = description.replace(/<\/?[^>]*>/g, "");
+          description = description.replace(/\s*/g, "");
+          return description;
         }
+
+        },
+      created(){
+          this.editContent = this.$store.state.editContent;
+          this.value = this.editContent.tab || "";
+          this.title = this.editContent.title;
+
+          // js处理去掉富文本编辑的html，样式，只显示纯文字内容，以供列表页使用
+          if(this.editContent.content){
+            this.contentText = this.description(this.editContent.content);
+          }
+
       }
     }
 </script>
