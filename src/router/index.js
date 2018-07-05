@@ -4,17 +4,17 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter);
 
-import Index from '@/components/index/index'
-import About from '@/components/about/about'
-import Login from '@/components/login/login'
+const Index = () => import('@/components/index/index');
+const About = () => import('@/components/about/about');
+const Login = () => import('@/components/login/login');
 
-import Details from '@/components/details/details'
-import UserInfo from '@/components/details/user/user'
-import Create from '@/components/create/create'
-import Ceshi from '@/components/index/ceshi'
+const Details = () => import('@/components/details/details');
+const UserInfo = () => import('@/components/details/user/user');
+const Create = () => import('@/components/create/create');
+const Message = () => import('@/components/message/message');
 
 let router = new VueRouter({
-  mode:'history',
+  // mode:'history',
   routes:[
     {
       path:'/index',
@@ -43,6 +43,10 @@ let router = new VueRouter({
     {
       path:'/create',
       component:Create,
+    },
+    {
+      path:'/my/message',
+      component:Message,
     },
     {
       path:'*',

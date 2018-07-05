@@ -128,6 +128,7 @@
           this.http.getLoginNames({name}).then(({data}) => {
              this.userallData = data.data;
              this.authorInfo.score = this.userallData.score;  // 同步用户的积分
+             console.log('用户登陆后积分为' + this.authorInfo.score);
              // 第一次请求将积分同步到vuex中
              this.$store.commit('savaScore',{
                score:this.userallData.score,

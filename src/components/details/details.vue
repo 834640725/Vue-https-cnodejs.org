@@ -265,8 +265,15 @@
 
         // 回复@用户的评论
         toClickReply(obj){
-           this.userNameReply = obj.id;
-           this.userreply = '@' + obj.author['loginname'];
+           let userLogin = this.$store.state.userLogin;
+           if(userLogin){
+             this.userNameReply = obj.id;
+             this.userreply = '@' + obj.author['loginname'];
+           }
+           else{
+             this.$router.push({path:'/login'})
+           }
+
         },
 
         // ISREPLY_NOW 确认回复
@@ -372,7 +379,7 @@
               })
            })
             .catch((err) => {
-               
+
             })
          }else{
             this.$router.push({path:'/index'})

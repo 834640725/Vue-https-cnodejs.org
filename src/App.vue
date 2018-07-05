@@ -5,7 +5,8 @@
           <img src="./assets/images/cnodejs_light.svg" alt="" class="header-logo" @click="clickHander">
           <ul class="header-nav">
             <li @click="clickHander">首页</li>
-            <li>关于</li>
+            <li @click="clickMessage">未读消息</li>
+            <li><a href="https://github.com/qiqingfu/Vue-https-cnodejs.org" target="_blank">关于</a></li>
             <li @click="clickLogin">{{isLogin}}</li>
           </ul>
         </div>
@@ -58,6 +59,11 @@ export default {
         // 登陆
         this.$router.push({path:'/login'})
       }
+    },
+
+    // 消息组件
+    clickMessage(){
+      this.$router.push({path:'/my/message'})
     }
   },
   computed:{
@@ -119,6 +125,12 @@ export default {
     line-height: 50px;
     color: #cccccc;
     margin: 0 17px;
+  }
+  .header-nav li>a {
+    color: #cccccc;
+  }
+  .header-nav li>a:hover {
+    color: #fff;
   }
   .header-nav li:hover {
     color: #fff;
