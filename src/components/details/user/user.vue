@@ -50,10 +50,15 @@
             </div>
 
           </div>
-          <div class="user-right">
-            <authorInfo :authorInfo="userSuccess" v-if="userSuccess.githubUsername">
-              <div class="r-title">个人信息</div>
-            </authorInfo>
+          <div>
+              <div class="user-right">
+                <authorInfo :authorInfo="userSuccess" v-if="userSuccess.githubUsername">
+                  <div class="r-title">个人信息</div>
+                </authorInfo>
+                <div id="myChart">
+
+                </div>
+              </div>
           </div>
         </section>
         <div style="height: 300px;"></div>
@@ -73,6 +78,7 @@
             userSuccess:{},   //用户信息
             replieslength:'',  //参与的话题
             topicslength:'', //创建的话题
+            activity:[], //活跃度
           }
         },
 
@@ -107,7 +113,29 @@
             }).then((data) => {
               this.topicslength = data.recent_topics.length;
               this.replieslength = data.recent_replies.length;
+              let arr = [this.topicslength,this.replieslength];
+              // 数据请求回来获取dom元素
+              this.drawLine(arr);
             })
+        },
+
+        // echarts图表
+        drawLine(num){
+          let myChart = this.$echarts.init(document.getElementById('myChart'));
+
+          myChart.setOption({
+            title: { text: '活跃度' },
+            tooltip: {},
+            xAxis: {
+              data: ["创建的话题","参与的话题"]
+            },
+            yAxis: {},
+            series: [{
+              name: '活跃度',
+              type: 'bar',
+              data: num,
+            }]
+          });
         }
       },
 
@@ -117,12 +145,11 @@
       computed:{
         userGithub(){
           return `https://github.com/${this.userSuccess.githubUsername}`
-        },
+        }
       },
       created(){
          this.axiosUserInfo();
       },
-
       // 监听路由发生变化,重新请求用户数据
       watch:{
           $route:function (newRoute) {

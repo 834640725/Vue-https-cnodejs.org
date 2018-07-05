@@ -17,6 +17,11 @@ import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 Vue.use(mavonEditor);
 
+// 引入echarts
+import echarts from 'echarts'
+
+Vue.prototype.$echarts = echarts;
+
 
 Vue.config.productionTip = false;
 
